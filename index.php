@@ -12,13 +12,15 @@ $orc = new Orc('Orc', 100);
 $playersAlive = [$goblin, $witch, $orc];
 
 while (count($playersAlive) > 1) {
+    echo"<h3><strong>Nouveau tour</strong><br></h3>";
     for ($i = 0; $i < count($playersAlive); $i++) {
         //----- si empoisonné: -3 PV par tour
         if ($playersAlive[$i]->getPlague()) {
             $playersAlive[$i]->getDamage(3);
+            echo$playersAlive[$i]->getName() . " a subi 3 points de poison<br>";
         }
         if ($playersAlive[$i]->getHealth() <= 0) {
-            echo $playersAlive[$i]->getName() . " vient de trépasser &#9760 <br>";
+            echo $playersAlive[$i]->getName() . "vient de trépasser &#9760 <br>";
             $offset = array_search($random_target, $playersAlive);
             array_splice($playersAlive, $offset, 1);
             break;
@@ -40,7 +42,7 @@ while (count($playersAlive) > 1) {
         //echo ("Nombre de joueurs encore en vie: " . count($playersAlive));
         if (count($playersAlive) > 1) {
             //---------------------- ATTAQUE aléatoire 
-            if ($random_method == 'heal_action') {
+            if ($random_method == 'heal_action') { //witch self healing
                 $playersAlive[$i]->$random_method($playersAlive[$i]);
                 echo $playersAlive[$i]->getName(), " se soigne de 5 points de vie<br>";
             } else {
@@ -52,7 +54,7 @@ while (count($playersAlive) > 1) {
                     . $damages, " points de dégats <br>";
             }
             if ($random_target->getHealth() <= 0) {
-                echo $random_target->getName() . " vient de trépasser!!!!!!!! <br>";
+                echo $random_target->getName() . " vient de trépasser &#9760 <br>";
                 $offset = array_search($random_target, $playersAlive);
                 array_splice($playersAlive, $offset, 1);
             }
@@ -64,7 +66,8 @@ while (count($playersAlive) > 1) {
         $poison =  $player instanceof Witch ? "/" : ($player->getPlague() ? "oui" : "non");
         $rows .= '<tr><td>' . $player->getName() . '</td><td>' . $player->getHealth() . '</td> <td>' . $poison . '</td> </tr>';
     }
-    echo    '<table class="table">
+    echo    '<h3><b>Bilan du tour</b></h3>
+    <table class="table">
                 <thead>
                     <tr>
                         <th>Persos</th>
@@ -77,6 +80,7 @@ while (count($playersAlive) > 1) {
                         ' . $rows . '
                    
                 </tbody>
-            </table>';
+            </table>
+            -----------------------------------------';
 }
 echo "Le vainqueur est " . $playersAlive[0]->getName() . ' il lui reste ' . $playersAlive[0]->getHealth() . ' PV';
