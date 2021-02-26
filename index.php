@@ -12,7 +12,6 @@ $orc = new Orc('Orc');
 $playersAlive = [$goblin, $witch, $orc];
 
 while (count($playersAlive) > 1) {
-    var_dump(count($playersAlive));
     for ($i = 0; $i < count($playersAlive); $i++) {
         //----- si empoisonné: -3 PV par tour
         if ($playersAlive[$i]->getPlague()) {
@@ -35,7 +34,7 @@ while (count($playersAlive) > 1) {
         $random_target =  count($targets) > 0 ? $targets[rand(0, count($targets) - 1)] : $targets[0];
         //echo ("  joueur:  " . $playersAlive[$i]->getName() . "  cible: " . $random_target->getName() . "  action  :" . $random_method."<br>");
         //---------------------- Récupération des infos santé
-        $initialHealth = $random_target->getHealth();        
+        $initialHealth = $random_target->getHealth();
         $damages = $initialHealth - $random_target->getHealth();
         //---------------------- ATTAQUE aléatoire 
         if ($random_method == 'heal_action') {
@@ -49,11 +48,12 @@ while (count($playersAlive) > 1) {
                 . $damages, " points de dégats <br>";
         }
         if ($random_target->getHealth() <= 0) {
-            echo $random_target->getName() . " vient de trépasser :( <br>";
+            echo $random_target->getName() . " vient de trépasser!!!!!!!! <br>";
             $offset = array_search($random_target, $playersAlive);
             array_splice($playersAlive, $offset, 1);
         }
     }
+
     $rows = '';
     foreach ($playersAlive as $player) {
         $poison =  $player instanceof Witch ? "/" : ($player->getPlague() ? "oui" : "non");
