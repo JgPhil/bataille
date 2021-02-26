@@ -6,9 +6,9 @@ use App\Entity\Orc;
 use App\Entity\Witch;
 use App\Entity\Goblin;
 
-$goblin = new Goblin('Goblin');
-$witch = new Witch('Witch');
-$orc = new Orc('Orc');
+$goblin = new Goblin('Goblin', 100);
+$witch = new Witch('Witch', 50);
+$orc = new Orc('Orc', 100);
 $playersAlive = [$goblin, $witch, $orc];
 
 while (count($playersAlive) > 1) {
@@ -21,9 +21,11 @@ while (count($playersAlive) > 1) {
             echo $playersAlive[$i]->getName() . " vient de trépasser &#9760 <br>";
             $offset = array_search($random_target, $playersAlive);
             array_splice($playersAlive, $offset, 1);
+            break;
         }
         //----------- actions possibles de l'entité
         $action_methods = preg_grep('/_action/', get_class_methods($playersAlive[$i]));
+        //var_dump($playersAlive[$i]);
         //---------------------- methode aléatoire
         $random_method = $action_methods[rand(0, count($action_methods) - 1)];
         //---------------------- cible aléatoire
@@ -35,22 +37,25 @@ while (count($playersAlive) > 1) {
         //echo ("  joueur:  " . $playersAlive[$i]->getName() . "  cible: " . $random_target->getName() . "  action  :" . $random_method."<br>");
         //---------------------- Récupération des infos santé
         $initialHealth = $random_target->getHealth();
-        $damages = $initialHealth - $random_target->getHealth();
-        //---------------------- ATTAQUE aléatoire 
-        if ($random_method == 'heal_action') {
-            $playersAlive[$i]->$random_method($playersAlive[$i]);
-            echo $playersAlive[$i]->getName(), " se soigne de 5 points de vie <br>";
-        } else {
-            $playersAlive[$i]->$random_method($random_target);
-            echo $playersAlive[$i]->getName() . ' attaque ' .
-                $random_target->getName() . ' avec '
-                . $random_method . ' et lui inflige '
-                . $damages, " points de dégats <br>";
-        }
-        if ($random_target->getHealth() <= 0) {
-            echo $random_target->getName() . " vient de trépasser!!!!!!!! <br>";
-            $offset = array_search($random_target, $playersAlive);
-            array_splice($playersAlive, $offset, 1);
+        //echo ("Nombre de joueurs encore en vie: " . count($playersAlive));
+        if (count($playersAlive) > 1) {
+            //---------------------- ATTAQUE aléatoire 
+            if ($random_method == 'heal_action') {
+                $playersAlive[$i]->$random_method($playersAlive[$i]);
+                echo $playersAlive[$i]->getName(), " se soigne de 5 points de vie<br>";
+            } else {
+                $playersAlive[$i]->$random_method($random_target);
+                $damages = $initialHealth - $random_target->getHealth();
+                echo $playersAlive[$i]->getName() . ' attaque ' .
+                    $random_target->getName() . ' avec '
+                    . $random_method . ' et lui inflige '
+                    . $damages, " points de dégats <br>";
+            }
+            if ($random_target->getHealth() <= 0) {
+                echo $random_target->getName() . " vient de trépasser!!!!!!!! <br>";
+                $offset = array_search($random_target, $playersAlive);
+                array_splice($playersAlive, $offset, 1);
+            }
         }
     }
 

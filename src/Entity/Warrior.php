@@ -6,13 +6,14 @@ namespace App\Entity;
 abstract class Warrior
 {
     protected $name;
-    protected $health = 100;
+    protected $health;
     protected $plague = false;
     protected $degats;
 
-    public function __construct(string $name)
+    public function __construct(string $name, int $health)
     {
         $this->name = $name;
+        $this->health = $health;
     }
 
 
