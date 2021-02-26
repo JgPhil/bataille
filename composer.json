@@ -1,0 +1,17 @@
+{
+  "name": "phil/bataille",
+  "authors": [
+    {
+      "name": "Philippe Jaming",
+      "email": "jamingph@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "require": {
+    "symfony/orm-pack": "^2.1"
+  }
+}
